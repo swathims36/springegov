@@ -1,4 +1,4 @@
-package org.service.api;
+package org.service.util;
 
 import java.io.BufferedReader;
 import java.io.IOException;

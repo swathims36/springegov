@@ -1,6 +1,5 @@
-package org.service.api;
+package org.service.exceptions;
 
-import org.service.exceptions.CustomException;
 import org.service.model.Error;
 import org.service.model.ErrorRes;
 import org.service.model.ResponseInfo;

@@ -1,4 +1,4 @@
-package org.service.api;
+package org.service.controller;
 
 import java.util.Optional;
 
@@ -11,6 +11,8 @@ import org.service.model.ServiceDefinitionSearchRequest;
 import org.service.model.ServiceRequest;
 import org.service.model.ServiceResponse;
 import org.service.model.ServiceSearchRequest;
+import org.service.service.ServiceApi;
+import org.service.service.ServiceApiDelegate;
 import org.service.service.ServiceApiDelegateImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;

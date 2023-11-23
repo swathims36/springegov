@@ -3,7 +3,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-package org.service.api;
+package org.service.service;
 
 import java.util.Optional;
 

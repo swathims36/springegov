@@ -1,4 +1,4 @@
-package org.service.api;
+package org.service.service;
 
 import java.util.Optional;
 
@@ -8,6 +8,7 @@ import org.service.model.ServiceDefinitionSearchRequest;
 import org.service.model.ServiceRequest;
 import org.service.model.ServiceResponse;
 import org.service.model.ServiceSearchRequest;
+import org.service.util.ApiUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;

@@ -3,13 +3,11 @@ package org.service.service;
 import java.io.IOException;
 import java.util.List;
 
-import org.service.api.ApiUtil;
-import org.service.api.ServiceApiDelegate;
 import org.service.dao.ServiceDAO;
 import org.service.dao.ServiceDefinitionDAO;
 import org.service.model.RequestInfo;
 import org.service.model.ResponseInfo;
-import org.service.model.Service;
+//import org.service.model.Service;
 import org.service.model.ServiceCriteria;
 import org.service.model.ServiceDefinition;
 import org.service.model.ServiceDefinitionCriteria;
@@ -19,15 +17,17 @@ import org.service.model.ServiceDefinitionSearchRequest;
 import org.service.model.ServiceRequest;
 import org.service.model.ServiceResponse;
 import org.service.model.ServiceSearchRequest;
+import org.service.util.ApiUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-@org.springframework.stereotype.Service
+@Service
 public class ServiceApiDelegateImpl implements ServiceApiDelegate {
 	@Autowired
 	private ServiceDefinitionDAO serviceDefinitionDAO;
@@ -41,20 +41,20 @@ public class ServiceApiDelegateImpl implements ServiceApiDelegate {
 		RequestInfo requestInfo = serviceDefinitionRequest.getRequestInfo();
 		ServiceDefinitionResponse response = new ServiceDefinitionResponse();
 		response.setResponseInfo(requestInfo.getResponseInfo());
-		ServiceDefinition sd = serviceDefinitionRequest.getServiceDefinition();
+		ServiceDefinition serviceDefinition = serviceDefinitionRequest.getServiceDefinition();
 		try {
 			String res = ApiUtil.fetchURL("https://random-data-api.com/api/v2/users?size=1");
 			ObjectMapper mapper = new ObjectMapper();
 			JsonNode node = mapper.readTree(res).get("address");
 			JsonNode addressNode = mapper.createObjectNode().set("address", node);
-			sd.setAdditionalDetails(addressNode);
+			serviceDefinition.setAdditionalDetails(addressNode);
 		} catch (JsonProcessingException e) {
 			throw new RuntimeException(e);
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
-		serviceDefinitionDAO.insert(sd);
-		response.addServiceDefinitionItem(sd);
+		serviceDefinitionDAO.insert(serviceDefinition);
+		response.addServiceDefinitionItem(serviceDefinition);
 		return new ResponseEntity(response, HttpStatus.OK);
 	}
 
@@ -80,7 +80,7 @@ public class ServiceApiDelegateImpl implements ServiceApiDelegate {
 		ResponseInfo responseInfo = requestInfo.getResponseInfo();
 		ServiceResponse response = new ServiceResponse();
 		response.setResponseInfo(responseInfo);
-		Service service = serviceRequest.getService();
+		org.service.model.Service service = serviceRequest.getService();
 		serviceDAO.insert(service);
 		response.addServiceItem(service);
 		return new ResponseEntity(response, HttpStatus.OK);
@@ -92,7 +92,7 @@ public class ServiceApiDelegateImpl implements ServiceApiDelegate {
 		serviceResponse.setPagination(serviceSearchRequest.getPagination());
 		serviceResponse.setResponseInfo(serviceSearchRequest.getRequestInfo().getResponseInfo());
 		ServiceCriteria serviceCriteria = serviceSearchRequest.getServiceDefinition();
-		List<Service> searchResult = serviceDAO.findByCriteria(serviceCriteria, serviceSearchRequest.getPagination());
+		List<org.service.model.Service> searchResult = serviceDAO.findByCriteria(serviceCriteria, serviceSearchRequest.getPagination());
 		if (searchResult != null)
 			searchResult.forEach(service -> serviceResponse.addServiceItem(service));
 		return new ResponseEntity<>(serviceResponse, HttpStatus.OK);
